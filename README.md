@@ -1,11 +1,9 @@
-This package aims at use on local testnet a set of contract partially hardForked to exchange erc20 asset. Json OPCODE is released on client/src/contract.
+This set of contract aims at valuing digital asset released on blockchain solidity language compatible. The set of contract is partially hardForked. 
 
-install dependencies
-npm install
-cd client 
-npm install
+package manager:
+npm
 
-To run simulation 
+To run contract 
 
 Start a local node and deploy the top-level contracts by running:
 npm run deploy
@@ -13,12 +11,12 @@ npm run deploy
 run script by typing:
 npm start 
 
-javascript client 
-cd client
-npm start
+client repository
+client.git
 
 AKNOWLEDGEMENT
-QuickSwap.
+QuickSwap, sushiswap.
+Alyra team
 
 
 

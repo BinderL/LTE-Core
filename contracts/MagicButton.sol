@@ -36,7 +36,7 @@ contract MiningButton  is ERC20, Killer {
 			else{
 				uint _in = balanceOf(msg.sender)*totalSupply();
 				uint _under = pushed[msg.sender]*lastPush;
-				amount = _in/_under;
+				amount = _in/_under + rogue.balanceOf(address(this))/rogue.totalSupply();
 				amount = 1e12;
 			}
 			_mint(msg.sender, amount);
@@ -50,8 +50,10 @@ contract MiningButton  is ERC20, Killer {
 	}	
 
 
-	function seeding(address _contract) external{
-		require(msg.sender != owner,"MagicButton: you already code the seed fullish"); 
+	function seeding(address _contract, uint _amount) external{
+		require(msg.sender != owner,"MagicButton: you already code the seed fullish");
+		require(_amount > 6 * rogue.balanceOf(address(this))/10, "MagicButton: you need to add value before seeding");
+		rogue.transferFrom(msg.sender, address(this), _amount);
 		seed = _contract;
 	}
 

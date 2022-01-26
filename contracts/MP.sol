@@ -93,8 +93,8 @@ contract MiningProtocol{
 
 	}
 
-	function prime(uint _id) public view returns(Pirate memory){
-		return pirates[_id];
+	function prime(uint _idp) public view returns(Pirate memory){
+		return pirates[_idp];
 	}
 
 	function marcheSurLaPlanche(uint _id, uint _idp) public {
@@ -117,7 +117,6 @@ contract MiningProtocol{
 		return start+tokenId+idp;
 	}
 
-
 	function _marcheSurLaPlanche(uint _tokenId, uint _id, uint _idp) internal{
 		treasure.burn(_tokenId);
 		_remove(_id, _idp);	
@@ -138,7 +137,23 @@ contract MiningProtocol{
 			treasure.safeTransferFrom(address(this), msg.sender, _tokenId);
 			_cale(_idp);
 			safePirateTransfer(msg.sender, _lordLand.rewardDebt);
+			_remove(_id, _idp);	
 			drone=false;
+		}
+	}
+
+	function recele(uint _idp, uint _id) external{
+		if(!drone){
+			drone = true;
+			uint amount = pirates[_idp].coffre[_id].value;
+			Landlubber storage _receleur = lordLand[pirates[_idp].coffre[_id].lordLand];
+			MPs.transferFrom(msg.sender, address(this), amount);
+			_receleur.treasures--;
+			_receleur.rewardDebt+=amount;
+			uint _tokenId = pirates[_idp].coffre[_id].tokenId;
+			treasure.safeTransferFrom(address(this), msg.sender, _tokenId);
+			_cale(_idp);
+			_remove(_id, _idp);	
 		}
 	}
 
@@ -160,13 +175,13 @@ contract MiningProtocol{
 		return MPs.balanceOf(address(this));
 	}
 
-	function _cale(uint _id) internal{
+	function _cale(uint _idp) internal{
 		uint _last = bourse() ;
 		IMiningButton(bachiBouzouk).pushButton();
 		uint _amount = bourse() - _last; 
-		pirates[_id].score+=_amount;
+		pirates[_idp].score+=_amount;
 		_digit();
-		_bamboche(0, _id) ;
+		_bamboche(0, _idp) ;
 	}
 
 	function _digit() public{

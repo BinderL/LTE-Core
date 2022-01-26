@@ -87,7 +87,32 @@ contract('MP.sol', function (accounts) {
 		it("get pending reward for next interact with MP ", async() => {
 			const pendingMPs = await mp.pendingMPs(0, accounts[1]);
 			console.log(pendingMPs.toNumber());
+		});
+
+		it("get asset from the protocol", async () => {
+			await puits(10,1);
+			await mps.mint(accounts[0], 10000);
+			var asset = await treasure.balanceOf(accounts[0]);
+			expect(asset.toNumber(), 0, "not withdraw yet");
+			await mp.pourParler(10, 1, {from:accounts[1]});
+			const tokensId = await mp.prime(1);
+			await  expect(tokensId[0], 1, "treasure is lost");
+			await mps.approve(mp.address, 1000);
+			var land = await mp.lordLand(accounts[1]);
+			expect(land["treasures"].toNumber(), 1, "had not been deposited");
+			await mp.recele(1,1);
+			land = await mp.lordLand(accounts[1]);
+			expect(land["treasures"].toNumber(), 0, "had not been withdraw");
+			asset = await treasure.balanceOf(accounts[0]);
+			expect(asset, 1, "had not been withdraw");
+			balance = await mps.balanceOf(accounts[0]);
+			expect(balance, 9990, "has not been paid");
+		});
+
+		it("get reward from the protocol", async () => {
+			
 
 		});
+
 	});
 })
